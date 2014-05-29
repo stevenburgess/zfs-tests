@@ -1,7 +1,13 @@
 import datetime
+import argparse
 import Common
 
-log_handle = open('/opt/zfs_perf_tests/logs/derp/results/20140529051756','r')
+parser = argparse.ArgumentParser()
+parser.add_argument('logfile', type=argparse.FileType('r'),
+    help = "Path to a log file genereated by the zfs performance test suite")
+args = parser.parse_args()
+
+log_handle = args.logfile
 
 results_map = {}
 prefix = 'start'
