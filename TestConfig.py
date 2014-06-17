@@ -78,3 +78,30 @@ def check_testfile():
              Configs.test_file_full_path + " please check config.cfg")
         sys.exit(1)
 
+def get_txg_history_filename(pool):
+    """There is a system by which the ZoL implimentation exports information
+    about its current transaction group. In 0.6.3 this implementation changed
+    from being
+    /proc/spl/kstat/zfs/txgs-POOL
+    to
+    /proc/spl/kstat/zfs/POOL/txgs
+    The file contains N number of TXG details, where N is determined by
+    /sys/module/zfs/parameters/zfs_txg_history"""
+    old_file_path = '/proc/spl/kstat/zfs/txgs-' + pool
+    new_file_path = '/proc/spl/kstat/zfs/' + pool + '/txgs'
+    if os.path.isfile(old_file_path):
+        # If this file exists, they are using an older verison of ZOL, and they
+        # can just read from the file directly.
+        return old_file_path
+    elif os.path.isfile(new_file_path):
+        # If this file exists, then they are using a version of ZoL after 0.6.3
+        # and we need to check that the file actually has contents.
+        config_file = open('/sys/module/zfs/parameters/zfs_txg_history')
+        number_of_txg = int(config_file.readline())
+        if number_of_txg < 1:
+            raise IOError("No transaction groups are being generated, please"+
+                    " check /sys/module/zfs/parameters/zfs_txg_history")
+        return new_file_path
+    else:
+        raise IOError("Could not locate a TXG file. Oops.")
+
