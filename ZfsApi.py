@@ -82,11 +82,10 @@ def get_current_txg(pool_name):
             # looking at.
             return int(line.split(' ')[2])
 
-def linux_get_current_txg(pool_name):
+def linux_get_current_txg(txg_file):
     """Gets the most recent transaction group number. Since the txg file is
     only 62 lines long, reading through the whole thing seems
     acceptable."""
-    txg_file = '/proc/spl/kstat/zfs/txgs-' + pool_name
     txg_file_handle = open(txg_file, 'r')
     for line in txg_file_handle:
         last_line = line
