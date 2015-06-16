@@ -110,3 +110,10 @@ on this machine in its current config, which may be a helpful metric to know.
 Secondly you could remake the pool with a different VDEV configuration and see
 how that changes the optimal thread count.
 
+##Working with log files
+
+These tests produce one log file per run. These log files can be read in via
+Reader.py to produce useful output (much like the output the actual runs
+produce). To serve an entire directory of runs into Reader.py, try
+
+for i in $(ls); do python ~/projects/zfs-tests/Reader.py $i;
