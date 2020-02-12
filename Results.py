@@ -52,7 +52,7 @@ class ResultsCollector():
         else:
             self.log("size: 0")
         self.log("zpool iostat -v:")
-        self.log(subprocess.check_output(['zpool', 'iostat', '-v']))
+        self.log(subprocess.check_output(['zpool', 'iostat', '-v']).decode("utf-8"))
         self.log("zpool status:")
-        self.log(subprocess.check_output(['zpool', 'status']))
+        self.log(subprocess.check_output(['zpool', 'status']).decode("utf-8"))
 

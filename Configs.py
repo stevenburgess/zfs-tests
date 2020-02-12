@@ -1,6 +1,6 @@
-import ConfigParser
+import configparser
 
-config = ConfigParser.SafeConfigParser()
+config = configparser.ConfigParser()
 config.read('config.cfg')
 
 main_pool = config.get('perf_tests', 'main_pool')

@@ -17,7 +17,7 @@ parser.add_argument('-v', '--verbose', action="store_true",
         help="The script will periodically print stats about TXGs and "
         " receive speed")
 parser.add_argument('-t', '--threads', type=int, default=4,
-        choices=xrange(1,32),
+        choices=range(1,32),
         help="The number of concurrent receives to perform")
 args = parser.parse_args()
 
@@ -51,7 +51,7 @@ def receive_file(zfs_filesystem):
 
 try:
     zfs_filesystem_list = []
-    for count in xrange(args.threads):
+    for count in range(args.threads):
         zfs_filesystem_list.append(zfs_receive_path + '/' + str(count))
     workerPool = multiprocessing.Pool(processes=args.threads)
     workerPool.map(receive_file, zfs_filesystem_list)

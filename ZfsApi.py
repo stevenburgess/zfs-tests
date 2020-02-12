@@ -39,7 +39,7 @@ def get_filesystem_properties(filesystem_name, property_set):
     # -H strips the header, you do not need it since you know the order
     # -p gives you the exact values, so time in UNIX timestamps, size in bytes
     get_response = subprocess.check_output(
-            ['zfs', 'get', '-Hp', ','.join(property_set), filesystem_name])
+            ['zfs', 'get', '-Hp', ','.join(property_set), filesystem_name]).decode("utf-8")
     propery_dictionary = {}
     for line in get_response.splitlines():
         split_line = line.split()
@@ -73,7 +73,7 @@ def get_current_txg(pool_name):
     """Get the current transaction group number for a given pool. Note that
     this call actually takes some time, since it actually reads from the
     disk"""
-    get_response = subprocess.check_output(['zdb', '-u', pool_name])
+    get_response = subprocess.check_output(['zdb', '-u', pool_name]).decode("utf-8")
     for line in get_response.splitlines():
         if "txg" in line:
             # The line looks something like
